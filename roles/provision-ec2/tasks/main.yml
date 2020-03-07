@@ -52,8 +52,7 @@
 - name: Add IP ADDRESS TO THE FILE
   lineinfile:
     dest: "{{ playbook_dir }}/server.txt"
-    regexp: "^(.+)$"
-    insertafter: '^\[server-ip]\'
-    line: "{{ ec2_ip }}:5000"
+    regexp: "^http://server-ip:5000"
+    line: "http://{{ ec2_ip }}:5000"
 
 

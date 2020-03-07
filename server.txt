@@ -1,2 +1,2 @@
-[server-ip]
+http://server-ip:5000
 
