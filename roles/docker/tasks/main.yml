@@ -1,0 +1,75 @@
+---
+- name: update repo
+  become: true
+  yum: 
+    name: "*"
+    state: latest
+
+- name: install git and docker
+  become: true
+  shell: |
+    yum install -y git docker
+
+- name: add users to docker and root groups
+  become: true
+  shell: |
+    usermod -aG docker ec2-user
+
+- name: enable_service
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+
+- name: Start_docker
+  become: yes
+  shell: |
+    systemctl start docker
+
+- name: install docker-compose
+  become: yes
+  shell: |
+    curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+    chmod +x /usr/local/bin/docker-compose
+
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{ playbook_dir }}/docker-compose.yml"
+    dest: "/home/ec2-user/"
+    owner: ec2-user
+    group: ec2-user
+    mode: '0644'
+
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{ playbook_dir }}/Dockerfile"
+    dest: "/home/ec2-user/"
+    owner: ec2-user
+    group: ec2-user
+    mode: '0644'
+
+- name: Copy file with owner and permissions
+  synchronize:
+    src: "{{ playbook_dir }}/templates"
+    dest: "/home/ec2-user/"
+
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{ playbook_dir }}/requirements.txt"
+    dest: "/home/ec2-user/"
+    owner: ec2-user
+    group: ec2-user
+    mode: '0644'
+
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{ playbook_dir }}/app.py"
+    dest: "/home/ec2-user/"
+    owner: ec2-user
+    group: ec2-user
+    mode: '0644'
+
+- name: deploy app
+  become: yes
+  shell: |
+    docker-compose up --build -d

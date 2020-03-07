@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-body">
+        <form action="/update/{{contact.0}}" method="POST">
+            <div class="form-group">
+                <label><b>Update your Name</label></b></label>
+                <input type="text" name="Username" value="{{contact.0}}" class="form-control">
+              </div>
+          <div class="form-group">
+            <label><b>Update your Favorite Color</label></b></label>
+            <input type="text" name="FavoriteColor" value="{{contact.1}}" class="form-control">
+          </div>
+          <div class="form-group col-md-5">
+            <label><b>Update your pet</label></b></label>
+            <select class="custom-select mr-sm-" id="Pets" name="Pets" value="{{contact.2}}" class="form-control" required>
+                <option value="">None</option>
+                <option value="Cats">Cats</option>
+                <option value="Dogs">Dogs</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

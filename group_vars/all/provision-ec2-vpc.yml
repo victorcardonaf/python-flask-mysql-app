@@ -1,0 +1,16 @@
+---
+ec2_keypair: ecs-keypair
+image_id: ami-0de53d8956e8dcf80
+instance_type: t2.medium
+cidr_block: 172.23.0.0/16
+cidr_public1: 172.23.30.0/24
+cidr_public2: 172.23.31.0/24
+cidr_private1: 172.23.40.0/24
+cidr_private2: 172.23.41.0/24
+az1a: us-east-1a
+az1b: us-east-1b
+
+
+
+
+
