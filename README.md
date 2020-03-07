@@ -63,9 +63,9 @@ This playbook will deploy resources in AWS. It will install a VPC inside from Vi
 **Access to the app deployed in a EC2 instance**
 
 ```
-To connect to the server, open a web browser and copy the IP address and port that appears in the file **server.txt**. In this file will be posted the public IP address of the Server after deploying the ansible playbook files.
+To connect to the server, open a web browser and copy the IP address and port that appears in the file server.txt. In this file will be posted the public IP address of the Server after deploying the ansible playbook files.
 
-cat server.txt:
+cat server.txt
 http://server-ip:5000
 
 ```
