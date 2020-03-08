@@ -49,7 +49,7 @@
     delay: 10
     timeout: 300
 
-- name: Add IP ADDRESS TO THE FILE
+- name: Add public IP address to server.txt file
   lineinfile:
     dest: "{{ playbook_dir }}/server.txt"
     regexp: "^http://server-ip:5000"

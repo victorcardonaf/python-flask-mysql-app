@@ -14,39 +14,29 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
   rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
-RUN echo "root:viticor" | chpasswd
+RUN echo "root:root" | chpasswd
 
 # In case it isn't obvious, you do NOT need httpd, it is only
 # an example implementation so can be safely ignored.
-RUN yum groupinstall -y "Development Tools" && yum -y install make && yum -y install wget
+RUN yum groupinstall -y "Development Tools" && yum -y install make wget
 WORKDIR /opt/
 RUN yum -y install zlib-devel libffi-devel
-RUN wget https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz 
-RUN tar -xzf Python-3.7.2.tgz
-RUN cd Python-3.7.2 && ./configure --enable-optimizations
-RUN cd /opt/Python-3.7.2 && make altinstall
-RUN yum -y install httpd; yum -y install openssh-server openssh-clients; yum clean all; yum -y install sudo; yum -y install net-tools; yum -y install telnet; yum -y install git
-RUN yum -y install epel-release; yum -y install ansible; yum -y install gcc git python-pip python-devel libffi-devel openssl-devel; pip install setuptools --upgrade; yum install make; pip install packaging; 
-RUN cd /opt && git clone https://github.com/ansible/ansible.git --recursive  
-RUN cd /opt/ansible && make install  
-RUN yum -y install vim
-RUN pip install boto3 boto
+RUN yum -y install httpd openssh-server openssh-clients; yum clean all; yum -y install sudo net-tools telnet;
+RUN yum --enablerepo=extras install epel-release && yum clean all; yum install -y makecache gcc git python-devel libffi-devel openssl-devel; yum -y install make;
+RUN yum install -y python-setuptools python-setuptools-devel; easy_install pip;
+RUN pip install packaging boto3 boto; pip install setuptools --upgrade;
+RUN yum install -y ansible;
 ENV ANSIBLE_HOST_KEY_CHECKING=False
-RUN echo "docker-admin-ansible" > /etc/hostname
-#ADD files/ssh_config /etc/ssh/ssh_config
 
 # You HAVE to enable your service PRIOR to calling "init"
 # since the init call is what ultimately fires it up
 RUN systemctl enable sshd.service
-
 # Again, no need to expose port 80, it is used as part of the
 # example implementation
 EXPOSE 22
 
 VOLUME /media
 WORKDIR /media
-
-RUN echo "alias python=/usr/local/bin/python3.7" >> /root/.bashrc && source /root/.bashrc
 
 #ENTRYPOINT systemctl ssh start && /bin/sh
 

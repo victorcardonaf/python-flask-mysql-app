@@ -1,5 +1,5 @@
 ---
-- name: Provision AWS Instances
+- name: Provision AWS
   become: true
   hosts: localhost 
   roles:
@@ -12,6 +12,25 @@
 
   roles:
     - { role: docker }
+
+- hosts: server
+  tasks:
+  - name: Set authorized key
+    become: true
+    authorized_key:
+        user: ec2-user
+        state: present
+        key: "{{ lookup('file', '{{ playbook_dir }}/inventory/keys/external_access.pub') }}"
+
+- hosts: localhost
+  tasks:
+  - name: Show Public IP Address to connect
+    shell: |
+      cat {{ playbook_dir }}/server.txt
+    register: ip
+
+  - name: Show Public IP Address to connect
+    debug: var=ip.stdout_lines[0]
  
 
 

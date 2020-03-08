@@ -32,7 +32,7 @@
     curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
     chmod +x /usr/local/bin/docker-compose
 
-- name: Copy file with owner and permissions
+- name: Copy docker-compose to the server
   copy:
     src: "{{ playbook_dir }}/docker-compose.yml"
     dest: "/home/ec2-user/"
@@ -40,7 +40,7 @@
     group: ec2-user
     mode: '0644'
 
-- name: Copy file with owner and permissions
+- name: Copy Dockerfile
   copy:
     src: "{{ playbook_dir }}/Dockerfile"
     dest: "/home/ec2-user/"
@@ -48,12 +48,12 @@
     group: ec2-user
     mode: '0644'
 
-- name: Copy file with owner and permissions
+- name: Copy templates folder
   synchronize:
     src: "{{ playbook_dir }}/templates"
     dest: "/home/ec2-user/"
 
-- name: Copy file with owner and permissions
+- name: Copy requirements.txt 
   copy:
     src: "{{ playbook_dir }}/requirements.txt"
     dest: "/home/ec2-user/"
@@ -61,7 +61,7 @@
     group: ec2-user
     mode: '0644'
 
-- name: Copy file with owner and permissions
+- name: Copy app.py file
   copy:
     src: "{{ playbook_dir }}/app.py"
     dest: "/home/ec2-user/"
@@ -69,7 +69,8 @@
     group: ec2-user
     mode: '0644'
 
-- name: deploy app
+- name: deploy app using docker-compose
   become: yes
   shell: |
     docker-compose up --build -d
+
