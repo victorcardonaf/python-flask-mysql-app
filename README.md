@@ -57,14 +57,14 @@ Now inside from the container, execute:
 ansible-playbook -i inventory/hosts provision_aws.yml
 ```
 
-This playbook will deploy resources in AWS. It will install a VPC inside from Virginia region and an EC2 t2.medium instance. In the instance will be installed Docker and Docker-compose. 
+This playbook will deploy resources in AWS. It will install a VPC inside from Virginia region and an EC2 t2.medium instance. In the instance will be installed Docker and Docker-compose. The python flask app will be deployed using docker-compose (flask app with a mysql container).
 
 
 **Access to the app deployed in a EC2 instance**
 
-```
-To connect to the server, open a web browser and copy the IP address and port that appears in the file server.txt. In this file will be posted the public IP address of the Server after deploying the ansible playbook files.
+If there is no errors in the playbook execution, the flask app should be accessible now. To connect to the server, open a web browser and copy the IP address and port that appears in the file server.txt. In this file dinamically will be posted the public IP address of the Server after deploying the ansible playbook files using the inline ansible module (replace **server-ip** accordingly):
 
+```
 cat server.txt
 http://server-ip:5000
 
@@ -74,7 +74,7 @@ If you require to connect via ssh to the EC2 instance (Please replace **server-i
 ```
 eval $(ssh-agent)
 ssh-add inventory/keys/keypair.pem
-ssh ec2-user@"server-ip"
+ssh ec2-user@server-ip
 ```
 
 
